@@ -1,10 +1,10 @@
 
-name: 步步宝
+name: 百度极速版
 
 on:
   workflow_dispatch:
   schedule:
-     - cron: '0,30 0-23 * * *'
+     - cron: '*/30 * * * *'
   watch:
     types: started
 jobs:
@@ -12,8 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     env:
-        BBB_bububaoTOKEN: ${{ secrets.BBB_bububaoTOKEN }}
-        BBB_CASH: ${{ secrets.BBB_CASH }}
+        BAIDU_COOKIE: ${{ secrets.BAIDU_COOKIE }}
         TZ: Asia/shanghai
     steps:
       - name: Checkout
@@ -25,11 +24,13 @@ jobs:
       - name: npm install
         run: |
           npm install
-      - name: '运行 【步步宝】'
-        if: env.BBB_bububaoTOKEN
+      - name: '运行 【百度极速】'
+        if: env.BAIDU_COOKIE
         run: |
-          node Task/actions.js
+          node Task/baidu_speed.js
         env:
+          BAIDU_CASH: ${{ secrets.BAIDU_CASH }}
+          BAIDU_TASK: ${{ secrets.BAIDU_TASK }}
           PUSH_KEY: ${{ secrets.PUSH_KEY}}
           BARK_PUSH: ${{ secrets.BARK_PUSH}}
           BARK_SOUND: ${{ secrets.BARK_SOUND}}
